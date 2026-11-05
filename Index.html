@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultraviolet Proxy Links</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #121212; color: #e0e0e0; padding: 2rem; max-width: 600px; margin: 0 auto; }
+        h1 { color: #f48fb1; text-align: center; }
+        .link-card { background: #1e1e1e; padding: 12px 20px; border-radius: 8px; margin: 10px 0; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        a { color: #81c784; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Ultraviolet Proxy Links List</h1>
+    <div id="links-container">Loading active links...</div>
+
+    <script>
+        fetch('./core.json')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('links-container');
+                container.innerHTML = '';
+                
+                // Adjust 'data.links' below depending on how your core.json is formatted
+                const links = data.links || data; 
+                
+                if (Array.isArray(links)) {
+                    links.forEach((url, index) => {
+                        const card = document.createElement('div');
+                        card.className = 'link-card';
+                        card.innerHTML = `<span>Proxy Node #${index + 1}</span> <a href="${url}" target="_blank">Launch 🚀</a>`;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p>Error parsing links configuration structure.</p>';
+                }
+            })
+            .catch(err => {
+                document.getElementById('links-container').innerHTML = '<p>Failed to load proxy core index.</p>';
+            });
+    </script>
+</body>
+</html>
